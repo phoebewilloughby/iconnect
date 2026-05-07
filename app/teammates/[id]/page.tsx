@@ -1,6 +1,5 @@
 "use client";
 
-import { use } from "react";
 import AppShell from "@/components/shell/AppShell";
 import { TEAMMATES, CONVERSATIONS, getContact, getCompany } from "@/lib/data";
 import { useAppStore } from "@/lib/store";
@@ -12,8 +11,8 @@ import Link from "next/link";
 import { useState } from "react";
 import { TEAMMATES as tm } from "@/lib/data";
 
-export default function TeammateDetailPage({ params }: { params: Promise<{ id: string }> }) {
-  const { id } = use(params);
+export default function TeammateDetailPage({ params }: { params: { id: string } }) {
+  const { id } = params;
   const { addToast } = useAppStore();
   const teammate = TEAMMATES.find((t) => t.id === id);
   const [reassigning, setReassigning] = useState<string | null>(null);
@@ -32,7 +31,7 @@ export default function TeammateDetailPage({ params }: { params: Promise<{ id: s
     (c) => c.assigneeId === id && c.status === "open"
   );
 
-  const handleReassign = (convId: string, toId: string, toName: string) => {
+  const handleReassign = (_convId: string, _toId: string, toName: string) => {
     setReassigning(null);
     addToast(`Moved 1 conversation to ${toName}'s queue. Undo.`);
   };

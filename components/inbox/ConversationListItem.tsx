@@ -7,10 +7,16 @@ import Avatar from "@/components/ui/Avatar";
 import FinSparkle from "@/components/icons/FinSparkle";
 import { Mail, MessageCircle, Sparkles, AlertTriangle, Lock } from "lucide-react";
 
+const channelAccent: Record<string, string> = {
+  email: "border-l-blue-400",
+  chat: "border-l-emerald-400",
+  ai: "border-l-purple-400",
+};
+
 const channelIcons = {
-  email: <Mail size={11} className="text-ink-500" />,
-  chat: <MessageCircle size={11} className="text-blue-500" />,
-  ai: <Sparkles size={11} className="text-purple-500" />,
+  email: <Mail size={10} className="text-blue-400" />,
+  chat: <MessageCircle size={10} className="text-emerald-500" />,
+  ai: <Sparkles size={10} className="text-purple-500" />,
 };
 
 interface Props {
@@ -28,65 +34,58 @@ export default function ConversationListItem({ conversation, selected, onSelect 
     <button
       onClick={onSelect}
       className={cn(
-        "w-full text-left px-4 py-3 border-b border-ink-300 hover:bg-purple-50 transition-colors flex gap-3",
-        selected && "bg-purple-100 hover:bg-purple-100",
+        "w-full text-left px-4 py-3.5 border-b border-ink-300 border-l-[3px] transition-all flex gap-3 group",
+        selected
+          ? cn("bg-purple-50", channelAccent[conversation.channel])
+          : cn("border-l-transparent hover:bg-purple-50/60 hover:border-l-purple-300"),
         conversation.isUnread && !selected && "bg-white"
       )}
     >
       <div className="relative flex-shrink-0 mt-0.5">
         <Avatar name={contact?.name ?? "?"} size="sm" />
         {conversation.isUnread && (
-          <span className="absolute -top-0.5 -left-0.5 w-2 h-2 rounded-full bg-purple-700 ring-2 ring-white" />
+          <span className="absolute -top-0.5 -left-0.5 w-2 h-2 rounded-full bg-purple-600 ring-2 ring-white" />
         )}
       </div>
 
       <div className="min-w-0 flex-1">
-        <div className="flex items-center gap-1 mb-0.5">
-          <span
-            className={cn(
-              "text-sm truncate flex-1",
-              conversation.isUnread ? "font-semibold text-ink-900" : "font-medium text-ink-700"
-            )}
-          >
+        {/* Name + time */}
+        <div className="flex items-baseline gap-1 mb-0.5">
+          <span className={cn(
+            "text-sm truncate flex-1",
+            conversation.isUnread ? "font-semibold text-ink-900" : "font-medium text-ink-700"
+          )}>
             {contact?.name ?? "Unknown"}
           </span>
-          <span className="text-[10px] text-ink-500 flex-shrink-0 ml-1">
+          <span className="text-[10px] text-ink-400 flex-shrink-0 tabular-nums">
             {formatTime(conversation.updatedAt)}
           </span>
         </div>
 
-        <div className="flex items-center gap-1 mb-0.5">
-          <span className="text-[11px] text-ink-500 truncate flex-1">
-            {company?.name}
-          </span>
-          {conversation.isConfidential && (
-            <Lock size={10} className="text-amber-600 flex-shrink-0" />
-          )}
-          {conversation.hasFinDraft && (
-            <FinSparkle size={12} className="flex-shrink-0" />
-          )}
-          {channelIcons[conversation.channel]}
-        </div>
-
-        <div className="flex items-center gap-1">
-          {conversation.section.includes("bounces") && (
-            <AlertTriangle size={10} className="text-danger flex-shrink-0" />
-          )}
-          <span
-            className={cn(
-              "text-xs truncate flex-1",
-              conversation.isUnread ? "text-ink-700 font-medium" : "text-ink-500"
-            )}
-          >
-            {conversation.subject}
+        {/* Company + badges */}
+        <div className="flex items-center gap-1.5 mb-1">
+          <span className="text-[11px] text-ink-500 truncate flex-1">{company?.name}</span>
+          <span className="flex items-center gap-1 flex-shrink-0">
+            {channelIcons[conversation.channel]}
+            {conversation.isConfidential && <Lock size={9} className="text-amber-500" />}
+            {conversation.hasFinDraft && <FinSparkle size={11} />}
+            {conversation.section.includes("bounces") && <AlertTriangle size={9} className="text-danger" />}
           </span>
         </div>
 
-        <p className="text-[11px] text-ink-500 truncate mt-0.5">{conversation.preview}</p>
+        {/* Subject */}
+        <p className={cn(
+          "text-xs truncate",
+          conversation.isUnread ? "text-ink-700 font-medium" : "text-ink-400"
+        )}>
+          {conversation.subject}
+        </p>
 
+        {/* Assignee pill */}
         {assignee && (
           <div className="mt-1.5">
-            <span className="text-[10px] bg-ink-100 text-ink-600 px-1.5 py-0.5 rounded-full">
+            <span className="inline-flex items-center gap-1 text-[10px] bg-ink-100 text-ink-500 px-1.5 py-0.5 rounded-full">
+              <span className="w-1.5 h-1.5 rounded-full bg-success inline-block" />
               {assignee.name.split(" ")[0]}
             </span>
           </div>

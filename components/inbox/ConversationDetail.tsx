@@ -177,7 +177,7 @@ export default function ConversationDetail() {
     <div className="flex-1 flex min-w-0 h-full overflow-hidden">
       <div className="flex-1 flex flex-col min-w-0 h-full">
         {/* Header */}
-        <div className="px-5 py-3 border-b border-ink-300 bg-white flex-shrink-0">
+        <div className="px-5 py-3 border-b border-purple-100 bg-purple-50/50 flex-shrink-0">
           <div className="flex items-start justify-between gap-3 mb-2">
             <div className="min-w-0">
               <h2 className="text-sm font-semibold text-ink-900 truncate">{conversation.subject}</h2>

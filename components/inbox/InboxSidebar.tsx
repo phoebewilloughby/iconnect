@@ -59,13 +59,13 @@ export default function InboxSidebar() {
   };
 
   return (
-    <div className="w-[210px] flex-shrink-0 h-full border-r border-ink-300 overflow-y-auto scrollbar-thin bg-white py-2">
+    <div className="w-[200px] flex-shrink-0 h-full border-r border-ink-300 overflow-y-auto scrollbar-thin bg-purple-50/60 py-2">
       {groups.map((group) => {
         const groupSections = sections.filter((s) => s.group === group);
         return (
           <div key={group} className="mb-1">
             <div className="px-4 pt-3 pb-1">
-              <span className="text-[10px] font-semibold tracking-wider uppercase text-ink-500">
+              <span className="text-[10px] font-bold tracking-widest uppercase text-ink-400">
                 {group}
               </span>
             </div>
@@ -77,26 +77,27 @@ export default function InboxSidebar() {
                   key={s.key}
                   onClick={() => handleSelect(s.key)}
                   className={cn(
-                    "w-full flex items-center gap-2.5 px-4 py-2 text-sm transition-colors",
+                    "w-full flex items-center gap-2.5 px-3 py-2 mx-1 rounded-lg text-sm transition-all",
                     active
-                      ? "bg-purple-200 text-purple-900 border-l-[3px] border-purple-700 pl-[13px] font-medium"
-                      : "text-ink-700 hover:bg-purple-50 font-normal"
+                      ? "bg-purple-700 text-white font-medium shadow-sm"
+                      : "text-ink-600 hover:bg-purple-100 hover:text-ink-900 font-normal"
                   )}
+                  style={{ width: "calc(100% - 8px)" }}
                 >
-                  <s.icon size={14} className="flex-shrink-0" />
+                  <s.icon size={13} className={cn("flex-shrink-0", active ? "text-purple-200" : "text-ink-400")} />
                   <span className="flex-1 text-left truncate">{s.label}</span>
                   {count > 0 && (
                     <span
                       className={cn(
-                        "text-[11px] font-semibold px-1.5 py-0.5 rounded-full min-w-[20px] text-center",
-                        active ? "bg-purple-700 text-white" : "bg-ink-100 text-ink-700"
+                        "text-[10px] font-bold px-1.5 py-0.5 rounded-full min-w-[18px] text-center",
+                        active ? "bg-white/20 text-white" : "bg-purple-200 text-purple-800"
                       )}
                     >
                       {count}
                     </span>
                   )}
-                  {s.key === "ooo" && (
-                    <span className="text-[9px] bg-ink-100 text-ink-500 px-1 rounded leading-tight">
+                  {s.key === "ooo" && !active && (
+                    <span className="text-[8px] bg-amber-100 text-amber-600 px-1 rounded font-medium leading-tight">
                       auto
                     </span>
                   )}
